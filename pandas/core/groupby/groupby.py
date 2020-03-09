@@ -685,6 +685,16 @@ b  2""",
         if not len(inds):
             raise KeyError(name)
 
+        for index in inds:
+            for i in range(len(self.keys)):
+                key = self.keys[i]
+                # if the cell does not contain the searched for data
+                if (type(name) != tuple):
+                    if obj.iloc[index, :][key] != name:
+                        raise KeyError(name)
+                elif obj.iloc[index, :][key] != name[i]:
+                    raise KeyError(name)
+
         return obj._take_with_is_copy(inds, axis=self.axis)
 
     def __iter__(self):
@@ -2584,3 +2594,53 @@ def get_groupby(
         observed=observed,
         mutated=mutated,
     )
+
+if (__name__ == "__main__"):
+
+
+
+    df = DataFrame(data={
+        'A': ['a1', 'a2', None],
+        'B': ['b1', 'b2', 'b1'],
+        'val': [1, 2, 3],
+    })
+    print(df)
+    print("="*40)
+    print("Test One:")
+    print("="*40)
+    grps = df.groupby(by=['A', 'B'])
+    print("Live Expected", "="*30)
+    print(grps.get_group(('a1', 'b1')))
+    print("Live Bug", "="*30)
+    print(grps.get_group(('a2', 'b1')))
+    print("Dev Expected", "="*30)
+    print(_GroupBy.get_group(grps, ('a1', 'b1')))
+    print("Dev Bugfix", "="*30)
+    print(_GroupBy.get_group(grps, ('a2', 'b1')))
+
+    # df = DataFrame({'Animal': ['Falcon', 'Falcon',
+    #                               'Parrot', 'Parrot'],
+    #                    'Max Speed': [380., 370., 24., 26.],
+    #                 'bullshit': ['a', 'b', 'c', 'd']})
+    #
+    # print(df)
+    # grps = df.groupby(['Animal'])
+    # print(_GroupBy.get_group(grps, ('Falcon')))
+    # print("=====")
+    # i = 0
+    # for key, item in grps:
+    #     print(i)
+    #     i +=1
+    #     print(key)
+    #     print(_GroupBy.get_group(grps, key))
+    # print(grps)
+    # print(grps.mean())
+    # print("=====")
+    print("=" * 40)
+    print("Test Two:")
+    print("=" * 40)
+    grps = df.groupby(by=['B'])
+    print("Live Expected", "=" * 30)
+    print(grps.get_group(('b1')))
+    print("Dev Exepected", "=" * 30)
+    print(_GroupBy.get_group(grps, ('b1')))
