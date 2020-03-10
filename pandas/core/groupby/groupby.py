@@ -689,7 +689,7 @@ b  2""",
             for i in range(len(self.keys)):
                 key = self.keys[i]
                 # if the cell does not contain the searched for data
-                if (type(name) != tuple):
+                if type(name) != tuple:
                     if obj.iloc[index, :][key] != name:
                         raise KeyError(name)
                 elif obj.iloc[index, :][key] != name[i]:
