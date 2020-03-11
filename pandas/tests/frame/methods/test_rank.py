@@ -329,3 +329,16 @@ class TestRank:
         )
         result = df.rank(pct=True).max()
         assert (result == 1).all()
+
+    def test_rank_minus_inf_keep_na(self):
+        # GH 32593
+        expected_df = DataFrame({'col': np.array([2.0,  4.0, np.nan, 3.0, 1.0])})
+        result_df = DataFrame({'col': np.array([1,  np.inf, np.nan, 10, -np.inf])}).rank(na_option='keep')
+        tm.assert_frame_equal(expected_df, result_df)
+
+    def test_rank_inf_keep_na(self):
+        expected_df = DataFrame({'col': np.array([1.0, 2.0, 3.0])})
+        result_df = DataFrame({'col': np.array([-np.inf, 0, np.inf])}).rank(na_option='keep')
+        tm.assert_frame_equal(expected_df, result_df)
+
+    
