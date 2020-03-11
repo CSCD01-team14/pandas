@@ -698,10 +698,11 @@ b  2""",
                         isValid = False
                     else:
                         isValid = isValid and True
-        except:
+        except TypeError:
             pass
         else:
-            if not isValid: raise KeyError(name)
+            if not isValid:
+                raise KeyError(name)
 
         return obj._take_with_is_copy(inds, axis=self.axis)
 
@@ -2602,4 +2603,3 @@ def get_groupby(
         observed=observed,
         mutated=mutated,
     )
-
