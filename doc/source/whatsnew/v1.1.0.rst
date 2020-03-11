@@ -309,6 +309,11 @@ Plotting
 -
 - Bug in :meth:`DataFrame.boxplot` and :meth:`DataFrame.plot.boxplot` lost color attributes of ``medianprops``, ``whiskerprops``, ``capprops`` and ``medianprops`` (:issue:`30346`)
 
+Groupby
+^^^^^^^
+
+- Bug in :meth:`GroupBy.get_group` raises ``KeyError`` when a ``name`` that does not exist is searched for (:issue:`32492`)
+
 
 Groupby/resample/rolling
 ^^^^^^^^^^^^^^^^^^^^^^^^
