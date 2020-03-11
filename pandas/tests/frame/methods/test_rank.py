@@ -330,15 +330,26 @@ class TestRank:
         result = df.rank(pct=True).max()
         assert (result == 1).all()
 
-    def test_rank_minus_inf_keep_na(self):
+    def test_rank_minus_inf_keep_nan(self):
         # GH 32593
         expected_df = DataFrame({'col': np.array([2.0,  4.0, np.nan, 3.0, 1.0])})
         result_df = DataFrame({'col': np.array([1,  np.inf, np.nan, 10, -np.inf])}).rank(na_option='keep')
         tm.assert_frame_equal(expected_df, result_df)
 
-    def test_rank_inf_keep_na(self):
+    def test_rank_inf_keep_nan(self):
+        # GH 32593
         expected_df = DataFrame({'col': np.array([1.0, 2.0, 3.0])})
         result_df = DataFrame({'col': np.array([-np.inf, 0, np.inf])}).rank(na_option='keep')
         tm.assert_frame_equal(expected_df, result_df)
 
-    
+    def test_rank_inf_bottom_nan(self):
+        # GH 32593
+        expected_df = DataFrame({'col': np.array([1.0, 2.0, 4.0, 3.0])})
+        result_df = DataFrame({'col': np.array([-np.inf, 0, np.nan, np.inf])}).rank(na_option='bottom')
+        tm.assert_frame_equal(expected_df, result_df)
+
+    def test_rank_inf_decimal_nan(self):
+        # GH 32593
+        expected_df = DataFrame({'col': np.array([2.0,3.0,4.5,6.0,1.0,4.5])})
+        result_df = DataFrame({'col': np.array([5.5, 6.99, np.inf, np.nan, 0.7, np.inf])}).rank(na_option='bottom')
+        tm.assert_frame_equal(expected_df, result_df)
