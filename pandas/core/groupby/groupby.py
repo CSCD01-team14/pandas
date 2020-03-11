@@ -686,16 +686,18 @@ b  2""",
             raise KeyError(name)
 
         try:
-            isValid = False
+            isValid = True
             for index in inds:
                 for i in range(len(self.keys)):
                     key = self.keys[i]
                     # if the cell does not contain the searched for data
                     if (type(name) != tuple):
                         if obj.iloc[index, :][key] != name:
-                            isValid = True
+                            isValid = False
                     elif obj.iloc[index, :][key] != name[i]:
-                        isValid = True
+                        isValid = False
+                    else:
+                        isValid = isValid and True
         except:
             pass
         else:
@@ -2600,3 +2602,4 @@ def get_groupby(
         observed=observed,
         mutated=mutated,
     )
+
