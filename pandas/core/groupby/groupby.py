@@ -685,6 +685,25 @@ b  2""",
         if not len(inds):
             raise KeyError(name)
 
+        try:
+            isValid = True
+            for index in inds:
+                for i in range(len(self.keys)):
+                    key = self.keys[i]
+                    # if the cell does not contain the searched for data
+                    if (type(name) != tuple):
+                        if obj.iloc[index, :][key] != name:
+                            isValid = False
+                    elif obj.iloc[index, :][key] != name[i]:
+                        isValid = False
+                    else:
+                        isValid = isValid and True
+        except TypeError:
+            pass
+        else:
+            if not isValid:
+                raise KeyError(name)
+
         return obj._take_with_is_copy(inds, axis=self.axis)
 
     def __iter__(self):
