@@ -1050,7 +1050,7 @@ def rank_2d(rank_t[:, :] in_arr, axis=0, ties_method='average',
             if rank_t is object:
                 nan_value = Infinity()
             elif rank_t is float64_t:
-                nan_value = np.inf
+                nan_value = NaN
             elif rank_t is int64_t:
                 nan_value = np.iinfo(np.int64).max
 
@@ -1058,7 +1058,7 @@ def rank_2d(rank_t[:, :] in_arr, axis=0, ties_method='average',
             if rank_t is object:
                 nan_value = NegInfinity()
             elif rank_t is float64_t:
-                nan_value = -np.inf
+                nan_value = NaN
             elif rank_t is int64_t:
                 nan_value = NPY_NAT
 
@@ -1120,7 +1120,7 @@ def rank_2d(rank_t[:, :] in_arr, axis=0, ties_method='average',
                 if rank_t is object:
                     skip_condition = (val is nan_value) and keep_na
                 else:
-                    skip_condition = (val == nan_value) and keep_na
+                    skip_condition = (val == nan_value or (np.isnan(val) and np.isnan(nan_value))) and keep_na
                 if skip_condition:
                     ranks[i, argsorted[i, j]] = NaN
 
