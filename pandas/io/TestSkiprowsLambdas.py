@@ -20,7 +20,7 @@ class TestSkiprowsLambdas(unittest.TestCase):
             "listed_in": String,
             "description": String
         }
-        mask = (show_id == 70153404)
+        mask = "(show_id == 70153404)"
         df = pd.read_csv('netflix_titles.csv', skiprows=mask, dtype=schema)
         expected = DataFrame(data={
             "show_id": [70153404],
@@ -45,7 +45,7 @@ class TestSkiprowsLambdas(unittest.TestCase):
             "area": int,
             "population": int
         }
-        mask = (area > 8.516)
+        mask = "(area > 8.516)"
         df = pd.read_csv('brics.csv', skiprows=mask, dtype=schema)
         expected = DataFrame(data={
             "country": ["Russia", "China"],
@@ -62,7 +62,7 @@ class TestSkiprowsLambdas(unittest.TestCase):
             "area": int,
             "population": int
         }
-        mask = (area < 8.516)
+        mask = "(area < 8.516)"
         df = pd.read_csv('brics.csv', skiprows=mask, dtype=schema)
         expected = DataFrame(data={
             "country": ["India", "South Africa"],
@@ -79,7 +79,7 @@ class TestSkiprowsLambdas(unittest.TestCase):
             "area": int,
             "population": int
         }
-        mask = (area <= 8.516 and population > 1200)
+        mask = "(area <= 8.516 and population > 1200)"
         df = pd.read_csv('brics.csv', skiprows=mask, dtype=schema)
         expected = DataFrame(data={
             "country": ["India", "China"],
@@ -96,7 +96,7 @@ class TestSkiprowsLambdas(unittest.TestCase):
             "area": int,
             "population": int
         }
-        mask = (area > 8.516 or area < 3.286)
+        mask = "(area > 8.516 or area < 3.286)"
         df = pd.read_csv('brics.csv', skiprows=mask, dtype=schema)
         expected = DataFrame(data={
             "country": ["Russia", "South Africa"],
