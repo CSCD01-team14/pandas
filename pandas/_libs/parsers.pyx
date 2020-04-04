@@ -596,7 +596,7 @@ cdef class TextReader:
         elif not callable(self.skiprows):
             for i in self.skiprows:
                 parser_add_skiprow(self.parser, i)
-        else:
+        elif callable(self.skiprows):
             self.parser.skipfunc = <PyObject *>self.skiprows
 
     cdef _setup_parser_source(self, source):

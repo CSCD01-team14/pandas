@@ -1142,6 +1142,12 @@ class TextFileReader(abc.Iterator):
 
         df = DataFrame(col_dict, columns=columns, index=index)
 
+        kwds = self.options
+
+        if isinstance(kwds.get("skiprows"), str):
+            df.query(kwds.get("skiprows"), inplace=True)
+            df.reset_index(drop=True, inplace=True)
+
         self._currow += new_rows
 
         if self.squeeze and len(df.columns) == 1:
