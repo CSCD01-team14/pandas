@@ -21,7 +21,7 @@ class TestSkiprowsLambdas(unittest.TestCase):
             "description": str,
         }
         mask = "(show_id == 70153404)"
-        df = pd.read_csv("netflix_titles.csv", skiprows=mask, dtype=schema)
+        df = pd.read_csv("netflix_titles.csv", skiprows=mask)
         expected = DataFrame(
             data={
                 "show_id": [70153404],
@@ -47,7 +47,7 @@ class TestSkiprowsLambdas(unittest.TestCase):
     def test_single_column_less_than(self):
         schema = {"country": str, "capital": str, "area": int, "population": int}
         mask = "(area > 8.516)"
-        df = pd.read_csv("brics.csv", skiprows=mask, dtype=schema)
+        df = pd.read_csv("brics.csv", skiprows=mask)
         expected = DataFrame(
             data={
                 "country": ["Russia", "China"],
@@ -56,16 +56,18 @@ class TestSkiprowsLambdas(unittest.TestCase):
                 "population": [143.5, 1357],
             }
         )
+        print(df.reset_index(drop=True))
+        print(expected)
         assert_frame_equal(df, expected)
 
     def test_single_column_greater_than(self):
         schema = {"country": str, "capital": str, "area": int, "population": int}
         mask = "(area < 8.516)"
-        df = pd.read_csv("brics.csv", skiprows=mask, dtype=schema)
+        df = pd.read_csv("brics.csv", skiprows=mask)
         expected = DataFrame(
             data={
                 "country": ["India", "South Africa"],
-                "capital": ["New Dehli", "Pretoria"],
+                "capital": ["New Delhi", "Pretoria"],
                 "area": [3.286, 1.221],
                 "population": [1252, 52.98],
             }
@@ -75,13 +77,13 @@ class TestSkiprowsLambdas(unittest.TestCase):
     def test_multi_columns_and(self):
         schema = {"country": str, "capital": str, "area": int, "population": int}
         mask = "(area <= 8.516 and population > 1200)"
-        df = pd.read_csv("brics.csv", skiprows=mask, dtype=schema)
+        df = pd.read_csv("brics.csv", skiprows=mask)
         expected = DataFrame(
             data={
-                "country": ["India", "China"],
-                "capital": ["New Dehli", "Beijing"],
-                "area": [3.286, 9.597],
-                "population": [1252, 1357],
+                "country": ["India"],
+                "capital": ["New Delhi"],
+                "area": [3.286],
+                "population": [1252.0],
             }
         )
         assert_frame_equal(df, expected)
@@ -89,13 +91,13 @@ class TestSkiprowsLambdas(unittest.TestCase):
     def test_multi_columns_or(self):
         schema = {"country": str, "capital": str, "area": int, "population": int}
         mask = "(area > 8.516 or area < 3.286)"
-        df = pd.read_csv("brics.csv", skiprows=mask, dtype=schema)
+        df = pd.read_csv("brics.csv", skiprows=mask)
         expected = DataFrame(
             data={
-                "country": ["Russia", "South Africa"],
-                "capital": ["Moscow", "Pretoria"],
-                "area": [17.10, 1.221],
-                "population": [143.5, 52.98],
+                "country": ["Russia", "China", "South Africa"],
+                "capital": ["Moscow", "Beijing", "Pretoria"],
+                "area": [17.10, 9.597, 1.221],
+                "population": [143.5, 1357.00, 52.98],
             }
         )
         assert_frame_equal(df, expected)
